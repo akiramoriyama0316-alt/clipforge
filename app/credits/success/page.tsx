@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle2 } from 'lucide-react';
 
+// 動的レンダリングを強制（ビルド時にデータベースにアクセスしないようにする）
+export const dynamic = 'force-dynamic';
+
 export default async function SuccessPage({
   searchParams,
 }: {

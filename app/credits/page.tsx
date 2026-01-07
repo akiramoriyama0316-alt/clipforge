@@ -4,6 +4,9 @@ import CreditPackages from '@/components/credit-packages';
 import { Card, CardContent } from '@/components/ui/card';
 import { db } from '@/lib/db';
 
+// 動的レンダリングを強制（ビルド時にデータベースにアクセスしないようにする）
+export const dynamic = 'force-dynamic';
+
 export default async function CreditsPage() {
   const { userId } = await auth();
   
