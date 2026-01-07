@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
       args: [userId],
     });
 
-    const credits = userResult.rows[0]?.credits || 0;
+    const credits = Number(userResult.rows[0]?.credits) || 0;
 
     if (credits < videoDurationMinutes) {
       // 処理状態を元に戻す

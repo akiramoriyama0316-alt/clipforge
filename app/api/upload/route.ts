@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       args: [clerkUserId],
     });
 
-    const credits = userResult.rows[0]?.credits || 0;
+    const credits = Number(userResult.rows[0]?.credits) || 0;
 
     if (credits <= 0) {
       return NextResponse.json(
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get('file') as File;
     // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/5d97c881-2979-476e-b15b-ef88cb7747c3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'api/upload/route.ts:POST',message:'FormData parsed',data:{hasFile:!!file,fileName:file?.name,fileSize:file?.size,userId},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    fetch('http://127.0.0.1:7242/ingest/5d97c881-2979-476e-b15b-ef88cb7747c3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'api/upload/route.ts:POST',message:'FormData parsed',data:{hasFile:!!file,fileName:file?.name,fileSize:file?.size,userId:clerkUserId},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
 
     if (!file) {

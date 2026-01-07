@@ -18,7 +18,7 @@ export async function GET() {
       args: [userId],
     });
 
-    const credits = result.rows[0]?.credits || 0;
+    const credits = Number(result.rows[0]?.credits) || 0;
 
     return NextResponse.json({ credits });
   } catch (error) {
@@ -29,4 +29,5 @@ export async function GET() {
     );
   }
 }
+
 

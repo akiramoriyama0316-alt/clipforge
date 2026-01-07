@@ -24,7 +24,7 @@ export default async function SuccessPage({
       sql: 'SELECT credits FROM users WHERE id = ?',
       args: [userId],
     });
-    credits = result.rows[0]?.credits || 0;
+    credits = Number(result.rows[0]?.credits) || 0;
   } catch (error) {
     console.error('Failed to fetch credits:', error);
   }
@@ -72,4 +72,5 @@ export default async function SuccessPage({
     </main>
   );
 }
+
 

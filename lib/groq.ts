@@ -5,7 +5,7 @@ const groq = new Groq({
 });
 
 export async function transcribeAudio(audioBuffer: Buffer, filename: string = 'audio.mp3'): Promise<string> {
-  const blob = new Blob([audioBuffer], { type: 'audio/mpeg' });
+  const blob = new Blob([new Uint8Array(audioBuffer)], { type: 'audio/mpeg' });
   const file = new File([blob], filename, { type: 'audio/mpeg' });
 
   const transcription = await groq.audio.transcriptions.create({
