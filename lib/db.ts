@@ -1,8 +1,35 @@
-import { createClient } from '@libsql/client';
+import { createClient, Client } from '@libsql/client';
 
-export const db = createClient({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
+// ビルド時には環境変数が設定されていない可能性があるため、
+// 実際に使用する際に初期化する
+function getDbClient(): Client {
+  if (!process.env.TURSO_DATABASE_URL) {
+    throw new Error('TURSO_DATABASE_URL is not set');
+  }
+  if (!process.env.TURSO_AUTH_TOKEN) {
+    throw new Error('TURSO_AUTH_TOKEN is not set');
+  }
+  
+  return createClient({
+    url: process.env.TURSO_DATABASE_URL,
+    authToken: process.env.TURSO_AUTH_TOKEN,
+  });
+}
+
+// 遅延初期化: 実際に使用されるまで初期化しない
+let dbInstance: Client | null = null;
+
+export const db = new Proxy({} as Client, {
+  get(_target, prop) {
+    if (!dbInstance) {
+      dbInstance = getDbClient();
+    }
+    const value = dbInstance[prop as keyof Client];
+    if (typeof value === 'function') {
+      return value.bind(dbInstance);
+    }
+    return value;
+  },
 });
 
 export async function initDatabase() {
